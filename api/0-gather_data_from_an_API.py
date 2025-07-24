@@ -1,4 +1,22 @@
 #!/usr/bin/python3
+"""
+0-gather_data_from_an_API.py
+
+This script retrieves and displays the TODO list progress for a given employee
+from a REST API. It takes an employee ID as a command-line argument and fetches
+the employee's name, the number of completed tasks, and the total number of tasks.
+The results are printed in a specified format.
+
+Usage:
+    python3 0-gather_data_from_an_API.py <employee_id>
+
+Arguments:
+    <employee_id> : An integer representing the ID of the employee.
+
+Example:
+    python3 0-gather_data_from_an_API.py 2
+"""
+
 import requests
 import sys
 
