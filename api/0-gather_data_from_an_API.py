@@ -17,28 +17,18 @@ if __name__ == "__main__":
 
     base_url = "https://jsonplaceholder.typicode.com"
 
-    # Fetch employee info
-    user_url = "{}/users/{}".format(base_url, employee_id)
-    user_response = requests.get(user_url)
+    # Get employee info
+    user = requests.get(f"{base_url}/users/{employee_id}").json()
+    employee_name = user.get("name")
 
-    if user_response.status_code != 200:
-        print("Employee not found.")
-        sys.exit(1)
+    # Get todos for employee
+    todos = requests.get(f"{base_url}/todos?userId={employee_id}").json()
+    done_tasks = [task for task in todos if task.get("completed")]
 
-    employee_name = user_response.json().get("name")
-
-    # Fetch todos for that employee
-    todos_url = "{}/todos?userId={}".format(base_url, employee_id)
-    todos_response = requests.get(todos_url)
-    todos = todos_response.json()
-
-    total_tasks = len(todos)
-    done_tasks = [task for task in todos if task.get("completed") is True]
-
-    # Print summary line
+    # Print the summary line exactly as required
     print("Employee {} is done with tasks({}/{}):"
-          .format(employee_name, len(done_tasks), total_tasks))
+          .format(employee_name, len(done_tasks), len(todos)))
 
-    # Print completed task titles
+    # Print completed task titles, formatted with a tab
     for task in done_tasks:
         print("\t {}".format(task.get("title")))
