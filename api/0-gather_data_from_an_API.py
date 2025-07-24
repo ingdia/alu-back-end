@@ -36,12 +36,12 @@ def get_employee_todo_progress(employee_id):
         num_completed = len(completed_tasks)
         
         # Display results
-        print(f"Employee {employee_name} is done with tasks({num_completed}/{total_tasks}):")
+        print("Employee {} is done with tasks({}/{}):".format(employee_name, num_completed, total_tasks))
         
         # Display completed task titles
         for task in completed_tasks:
             title = task.get('title', '')
-            print(f"\t {title}")
+            print("\t {}".format(title))
             
     except requests.RequestException as e:
         print(f"Error fetching data: {e}", file=sys.stderr)
