@@ -2,15 +2,24 @@
 import requests
 import sys
 
-def main(employee_id):
-    # Define the API URLs
+def fetch_employee_data(employee_id):
+    """
+    Fetch employee data and TODO list from the API.
+
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Returns:
+        tuple: A tuple containing the employee's name, 
+               a list of completed tasks, and the total number of tasks.
+    """
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
     # Fetch user data
     user_response = requests.get(user_url)
     user_data = user_response.json()
-    
+
     # Fetch TODOs data
     todos_response = requests.get(todos_url)
     todos_data = todos_response.json()
@@ -21,6 +30,16 @@ def main(employee_id):
     # Calculate completed and total tasks
     total_tasks = len(todos_data)
     completed_tasks = [todo['title'] for todo in todos_data if todo['completed']]
+    return employee_name, completed_tasks, total_tasks
+
+def main(employee_id):
+    """
+    Main function to display the TODO list progress of an employee.
+
+    Args:
+        employee_id (int): The ID of the employee.
+    """
+    employee_name, completed_tasks, total_tasks = fetch_employee_data(employee_id)
     number_of_done_tasks = len(completed_tasks)
 
     # Display the results
