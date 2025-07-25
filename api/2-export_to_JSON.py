@@ -2,6 +2,7 @@
 """
 Using a REST API and an EMP_ID, save info about their TODO list in a json file
 """
+from fileinput import filename
 import json
 import requests
 import sys
@@ -32,4 +33,4 @@ if __name__ == "__main__":
     with open(f"{employee_id}.json", 'w') as file:
         json.dump(output_data, file, indent=4)
 
-    print(f"Tasks for employee {employee_id} exported to {file_name}.")
+    print(f"Tasks for employee {employee_id} exported to {filename}.")
