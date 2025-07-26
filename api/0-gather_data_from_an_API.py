@@ -28,9 +28,10 @@ def get_employee_todos_progress(employee_id):
         done_tasks = [task for task in todos if task['completed']]
         done_count = len(done_tasks)
 
-        # Print progress (EXACT checker format, no space before "(")
+        # Print progress (PEP8-compliant and exact checker format)
         print(
-            f"Employee {employee_name} is done with tasks({done_count}/{total_tasks}):"
+            f"Employee {employee_name} is done with tasks"
+            f"({done_count}/{total_tasks}):"
         )
 
         # Print completed task titles
