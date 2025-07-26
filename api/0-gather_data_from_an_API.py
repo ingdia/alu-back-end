@@ -8,7 +8,7 @@ from sys import argv
 
 
 def get_employee_todos_progress(employee_id):
-    """Fetch and display TODO list progress for an employee"""
+    """Fetch and display TODO list progress for an employee."""
     try:
         employee_id = int(employee_id)  # Ensure it's an integer
         url = "https://jsonplaceholder.typicode.com"
@@ -28,9 +28,9 @@ def get_employee_todos_progress(employee_id):
         done_tasks = [task for task in todos if task['completed']]
         done_count = len(done_tasks)
 
-        # Print progress
+        # Print progress (split string to keep line length <= 79)
         print(
-            f"Employee {employee_name} is done with tasks"
+            f"Employee {employee_name} is done with tasks "
             f"({done_count}/{total_tasks}):"
         )
 
@@ -40,12 +40,12 @@ def get_employee_todos_progress(employee_id):
 
     except ValueError:
         print("Employee ID must be an integer.")
-    except requests.RequestException as e:
-        print(f"Network error: {e}")
+    except requests.RequestException as err:
+        print(f"Network error: {err}")
     except KeyError:
         print("Invalid employee data received.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except Exception as err:
+        print(f"An error occurred: {err}")
 
 
 if __name__ == '__main__':
