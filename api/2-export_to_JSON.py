@@ -1,36 +1,52 @@
 #!/usr/bin/python3
 """
-Using a REST API and an EMP_ID, save info about their TODO list in a json file
+Exports employee TODO list to a JSON file.
 """
-from fileinput import filename
+
 import json
 import requests
-import sys
+from sys import argv
 
-if __name__ == "__main__":
-    """ Main section """
-    BASE_URL = 'https://jsonplaceholder.typicode.com'
-    employee_id = sys.argv[1] if len(sys.argv) > 1 else None
 
-    if not employee_id:
-        print("Please provide an employee ID as an argument.")
-        sys.exit(1)
+if __name__ == '__main__':
+    if len(argv) != 2:
+        print("Usage: ./2-export_to_JSON.py <employee_id>")
+        exit(1)
 
-    employee = requests.get(f"{BASE_URL}/users/{employee_id}/").json()
-    employee_name = employee.get("username")
-    emp_todos = requests.get(f"{BASE_URL}/users/{employee_id}/todos").json()
-    serialized_todos = []
+    try:
+        employee_id = int(argv[1])
+        url = "https://jsonplaceholder.typicode.com"
 
-    for todo in emp_todos:
-        serialized_todos.append({
-            "task": todo.get("title"),
-            "completed": todo.get("completed"),
-            "username": employee_name
-        })
+        # Fetch user data
+        user_url = f"{url}/users/{employee_id}"
+        user_res = requests.get(user_url)
+        user_res.raise_for_status()
+        user = user_res.json()
+        username = user.get("username")
 
-    output_data = {employee_id: serialized_todos}
+        # Fetch todos
+        todos_url = f"{url}/todos?userId={employee_id}"
+        todos_res = requests.get(todos_url)
+        todos_res.raise_for_status()
+        todos = todos_res.json()
 
-    with open(f"{employee_id}.json", 'w') as file:
-        json.dump(output_data, file, indent=4)
+        # Build JSON structure
+        tasks = [{
+            "task": task["title"],
+            "completed": task["completed"],
+            "username": username
+        } for task in todos]
 
-    print(f"Tasks for employee {employee_id} exported to {filename}.")
+        data = {str(employee_id): tasks}
+
+        # Write to JSON file
+        filename = f"{employee_id}.json"
+        with open(filename, "w", encoding='utf-8') as f:
+            json.dump(data, f)
+
+    except ValueError:
+        print("Employee ID must be an integer.")
+    except requests.RequestException as err:
+        print(f"Network error: {err}")
+    except Exception as err:
+        print(f"An error occurred: {err}")
