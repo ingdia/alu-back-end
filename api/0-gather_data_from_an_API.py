@@ -5,43 +5,39 @@ Access employee TODO list progress from a REST API
 
 import requests
 from sys import argv
-""" modules to work with """ 
+
 
 def get_employee_todos_progress(employee_id):
-    """  a function to get employee info about Todo list"""
+    """Fetch and display TODO list progress for an employee"""
     try:
-        url =   "https://jsonplaceholder.typicode.com"
-        # user_info = requests.get(f"{url}/users/{employee_id}")
-        user_datas = requests.get(url + f"/users/{employee_id}")
-        user_data = user_datas.json()
+        url = "https://jsonplaceholder.typicode.com"
+
+        # Get employee info
+        user_response = requests.get(f"{url}/users/{employee_id}")
+        user_data = user_response.json()
         employee_name = user_data['name']
 
-        """fetching the todos of the employee"""
-        todos_list = requests.get(url +f"/todos?userId={employee_id}")
-        json_todos_list = todos_list.json()
+        # Get todos
+        todos_response = requests.get(f"{url}/todos?userId={employee_id}")
+        todos = todos_response.json()
 
-        total_tasks = len(json_todos_list)
-        task_done = [task for task in json_todos_list if task['completed']]  
-        no_task_done = len(task_done)
+        total_tasks = len(todos)
+        done_tasks = [task for task in todos if task['completed']]
+        done_count = len(done_tasks)
 
-        """returning the employee info and tasks done"""
-        print(f"Employee {employee_name} is done with task("
-              f"{no_task_done}/{total_tasks}):")
-        
-        """title of completed tasks"""
-        for task in task_done:
+        # Print progress
+        print(f"Employee {employee_name} is done with tasks({done_count}/{total_tasks}):")
+
+        # Print completed task titles
+        for task in done_tasks:
             print(f"\t {task['title']}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
+
 if __name__ == '__main__':
     if len(argv) != 2:
-         print("Usage: Script <employee_id>")
+        print("Usage: Script <employee_id>")
     else:
-        get_employee_todos_progress(argv[1]) 
-
-
-          
-
-  
+        get_employee_todos_progress(argv[1])
