@@ -10,7 +10,7 @@ from sys import argv
 def get_employee_todos_progress(employee_id):
     """Fetch and display TODO list progress for an employee."""
     try:
-        employee_id = int(employee_id)  # Ensure it's an integer
+        employee_id = int(employee_id)
         url = "https://jsonplaceholder.typicode.com"
 
         # Get employee info
@@ -28,10 +28,9 @@ def get_employee_todos_progress(employee_id):
         done_tasks = [task for task in todos if task['completed']]
         done_count = len(done_tasks)
 
-        # Print progress (split string to keep line length <= 79)
+        # Print progress (EXACT checker format, no space before "(")
         print(
-            f"Employee {employee_name} is done with tasks "
-            f"({done_count}/{total_tasks}):"
+            f"Employee {employee_name} is done with tasks({done_count}/{total_tasks}):"
         )
 
         # Print completed task titles
