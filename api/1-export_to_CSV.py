@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Exports employee TODO list to CSV format"""
-
 import csv
 import requests
 import sys
@@ -18,7 +17,9 @@ if __name__ == "__main__":
     username = user.get("username")
 
     # Fetch todos
-    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todos_url = (
+        f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    )
     todos_response = requests.get(todos_url)
     todos = todos_response.json()
 
@@ -33,3 +34,4 @@ if __name__ == "__main__":
                 str(task.get("completed")),
                 task.get("title")
             ])
+
